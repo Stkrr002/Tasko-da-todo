@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -36,7 +37,6 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             TaskodatodoTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -70,7 +70,7 @@ fun ReorderableTaskList(viewModel: TaskViewModel) {
                     .fillMaxWidth()
                     .offset(y = if (draggedItemIndex == index) offsetY.dp else 0.dp)
                     .pointerInput(Unit) {
-                        detectDragGestures(
+                        detectDragGesturesAfterLongPress(
                             onDragStart = {
                                 draggedItemIndex = index
                             },
