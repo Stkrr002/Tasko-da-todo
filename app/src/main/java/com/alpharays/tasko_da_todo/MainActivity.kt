@@ -55,13 +55,12 @@ fun ToDoListApp(innerPadding: PaddingValues) {
     ReorderableTaskList(viewModel = viewModel)
 }
 
-
-
 @Composable
 fun ReorderableTaskList(viewModel: TaskViewModel) {
     val tasks by viewModel.tasks.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var draggedItemIndex by remember { mutableStateOf<Int?>(null) }
+    var offsetY by remember { mutableStateOf(0f) }
 
     LazyColumn {
         itemsIndexed(tasks, key = { _, task -> task.id }) { index, task ->
@@ -69,18 +68,30 @@ fun ReorderableTaskList(viewModel: TaskViewModel) {
                 task = task,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .offset(y = if (draggedItemIndex == index) offsetY.dp else 0.dp)
                     .pointerInput(Unit) {
                         detectDragGestures(
-                            onDragStart = { draggedItemIndex = index },
-                            onDragEnd = { draggedItemIndex = null },
-                            onDragCancel = { draggedItemIndex = null },
+                            onDragStart = {
+                                draggedItemIndex = index
+                            },
+                            onDragEnd = {
+                                draggedItemIndex = null
+                                offsetY = 0f
+                            },
+                            onDragCancel = {
+                                draggedItemIndex = null
+                                offsetY = 0f
+                            },
                             onDrag = { change, dragAmount ->
                                 change.consume()
-                                val newIndex = (index + dragAmount.y.toInt() / 100).coerceIn(0, tasks.size - 1)
+                                offsetY += dragAmount.y
+                                val newIndex = (index + (offsetY / 100).toInt()).coerceIn(0, tasks.size - 1)
                                 if (newIndex != index) {
                                     coroutineScope.launch {
                                         viewModel.reorderTasks(index, newIndex)
                                     }
+                                    draggedItemIndex = newIndex
+                                    offsetY = 0f
                                 }
                             }
                         )
