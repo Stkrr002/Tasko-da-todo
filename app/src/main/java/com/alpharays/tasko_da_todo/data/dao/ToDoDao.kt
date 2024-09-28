@@ -6,23 +6,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.alpharays.tasko_da_todo.data.entity.TaskEntity
+import com.alpharays.tasko_da_todo.data.entity.Task
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ToDoDao {
-    @Query("SELECT * FROM tasks ORDER BY position ASC LIMIT :limit OFFSET :offset")
-    fun getTasks(limit: Int, offset: Int): Flow<List<TaskEntity>>
+interface TaskDao {
+    @Query("SELECT * FROM tasks ORDER BY position ASC")
+    fun getAllTasks(): Flow<List<Task>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addTask(task: TaskEntity)
+    suspend fun insertTask(task: Task)
 
     @Update
-    suspend fun editTask(task: TaskEntity)
+    suspend fun updateTask(task: Task)
 
     @Delete
-    suspend fun deleteTask(task: TaskEntity)
+    suspend fun deleteTask(task: Task)
 
-    @Query("UPDATE tasks SET position = :newPosition WHERE id = :taskId")
-    suspend fun updateTaskPosition(taskId: Int, newPosition: Int)
+    @Query("UPDATE tasks SET position = :position WHERE id = :id")
+    suspend fun updateTaskPosition(id: Int, position: Int)
 }

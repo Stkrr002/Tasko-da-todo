@@ -1,28 +1,30 @@
 package com.alpharays.tasko_da_todo.di
 
-import android.content.Context
-import androidx.room.Room
+import android.app.Application
+import com.alpharays.tasko_da_todo.data.TaskDatabase
+import com.alpharays.tasko_da_todo.data.dao.TaskDao
+import com.alpharays.tasko_da_todo.data.repository.TaskRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ToDoModule {
+object AppModule {
 
     @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): ToDoDatabase {
-        return Room.databaseBuilder(
-            context,
-            ToDoDatabase::class.java,
-            "todo_db"
-        ).build()
+    fun provideTaskDatabase(app: Application): TaskDatabase {
+        return TaskDatabase.getDatabase(app)
     }
 
     @Provides
-    fun provideToDoDao(db: ToDoDatabase): ToDoDao = db.toDoDao()
+    fun provideTaskDao(database: TaskDatabase): TaskDao {
+        return database.taskDao()
+    }
+
+    @Provides
+    fun provideTaskRepository(taskDao: TaskDao): TaskRepository {
+        return TaskRepository(taskDao)
+    }
 }

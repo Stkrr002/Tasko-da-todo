@@ -2,12 +2,12 @@ package com.alpharays.tasko_da_todo.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alpharays.tasko_da_todo.domain.model.Task
-import com.alpharays.tasko_da_todo.domain.usecase.AddTaskUseCase
-import com.alpharays.tasko_da_todo.domain.usecase.DeleteTaskUseCase
-import com.alpharays.tasko_da_todo.domain.usecase.EditTaskUseCase
-import com.alpharays.tasko_da_todo.domain.usecase.GetTasksUseCase
-import com.alpharays.tasko_da_todo.domain.usecase.ReorderTaskUseCase
+import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.domain.AddTaskUseCase
+import com.alpharays.tasko_da_todo.domain.DeleteTaskUseCase
+import com.alpharays.tasko_da_todo.domain.EditTaskUseCase
+import com.alpharays.tasko_da_todo.domain.GetTasksUseCase
+import com.alpharays.tasko_da_todo.domain.ReorderTasksUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,12 +15,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ToDoListViewModel @Inject constructor(
+class TaskViewModel @Inject constructor(
     private val addTaskUseCase: AddTaskUseCase,
     private val editTaskUseCase: EditTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val getTasksUseCase: GetTasksUseCase,
-    private val reorderTaskUseCase: ReorderTaskUseCase
+    private val reorderTasksUseCase: ReorderTasksUseCase
 ) : ViewModel() {
 
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
@@ -28,25 +28,33 @@ class ToDoListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getTasksUseCase().collect { tasks->
-                _tasks.value = tasks
+            getTasksUseCase().collect { taskList ->
+                _tasks.value = taskList
             }
         }
     }
 
-    fun addTask(task: Task) = viewModelScope.launch {
-        addTaskUseCase(task)
+    fun addTask(task: Task) {
+        viewModelScope.launch {
+            addTaskUseCase(task)
+        }
     }
 
-    fun editTask(task: Task) = viewModelScope.launch {
-        editTaskUseCase(task)
+    fun editTask(task: Task) {
+        viewModelScope.launch {
+            editTaskUseCase(task)
+        }
     }
 
-    fun deleteTask(task: Task) = viewModelScope.launch {
-        deleteTaskUseCase(task)
+    fun deleteTask(task: Task) {
+        viewModelScope.launch {
+            deleteTaskUseCase(task)
+        }
     }
 
-    fun reorderTask(fromIndex: Int, toIndex: Int) = viewModelScope.launch {
-        reorderTaskUseCase(fromIndex, toIndex)
+    fun reorderTasks(id: Int, position: Int) {
+        viewModelScope.launch {
+            reorderTasksUseCase(id, position)
+        }
     }
 }

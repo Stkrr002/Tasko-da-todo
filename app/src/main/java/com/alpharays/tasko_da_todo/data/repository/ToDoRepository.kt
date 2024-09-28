@@ -1,40 +1,28 @@
 package com.alpharays.tasko_da_todo.data.repository
 
-import com.alpharays.tasko_da_todo.data.dao.ToDoDao
-import com.alpharays.tasko_da_todo.data.entity.toDomainModel
-import com.alpharays.tasko_da_todo.data.entity.toEntity
-import com.alpharays.tasko_da_todo.domain.model.Task
+import com.alpharays.tasko_da_todo.data.dao.TaskDao
+import com.alpharays.tasko_da_todo.data.entity.Task
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class ToDoRepository @Inject constructor(private val dao: ToDoDao) {
-    fun getTasks(): Flow<List<Task>> {
-        return dao.getTasks(limit = 20, offset = 0).map { entities ->
-            entities.map { it.toDomainModel() }
-        }
+class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
+    val allTasks: Flow<List<Task>> = taskDao.getAllTasks()
+
+    suspend fun insert(task: Task) {
+        taskDao.insertTask(task)
     }
 
-    suspend fun addTask(task: Task) {
-        dao.addTask(task.toEntity())
+    suspend fun update(task: Task) {
+        taskDao.updateTask(task)
     }
 
-    suspend fun editTask(task: Task) {
-        dao.editTask(task.toEntity())
+    suspend fun delete(task: Task) {
+        taskDao.deleteTask(task)
     }
 
-    suspend fun deleteTask(task: Task) {
-        dao.deleteTask(task.toEntity())
-    }
-
-    suspend fun reorderTasks(fromIndex: Int, toIndex: Int) {
-        val tasks = getTasks().firstOrNull() ?: return
-        val reorderedTasks = tasks.toMutableList().apply {
-            add(toIndex, removeAt(fromIndex))
-        }
-        reorderedTasks.forEachIndexed { index, task ->
-            dao.updateTaskPosition(task.id, index)
-        }
+    suspend fun updatePosition(id: Int, position: Int) {
+        taskDao.updateTaskPosition(id, position)
     }
 }
