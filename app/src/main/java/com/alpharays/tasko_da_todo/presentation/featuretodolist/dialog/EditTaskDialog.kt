@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import com.alpharays.tasko_da_todo.data.entity.Task
 
 @Composable
-fun EditTaskDialog(task: Task,onSubmitClicked: (Task) -> Unit){
+fun EditTaskDialog(task: Task, onSubmitClicked: (Task) -> Unit, onCancelClicked: () -> Unit) {
     var taskTitle by remember { mutableStateOf(task.title) }
     var taskDescription by remember { mutableStateOf(task.description) }
     AlertDialog(
@@ -47,7 +47,7 @@ fun EditTaskDialog(task: Task,onSubmitClicked: (Task) -> Unit){
             }
         },
         dismissButton = {
-            Button(onClick = {  }) {
+            Button(onClick = { onCancelClicked() }) {
                 Text("Cancel")
             }
         }

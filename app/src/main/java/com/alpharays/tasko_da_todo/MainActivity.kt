@@ -130,7 +130,9 @@ class MainActivity : ComponentActivity() {
                         EditTaskDialog(
                             task = viewModel.showDialogData!!.task,
                             onSubmitClicked = viewModel.showDialogData!!.onSubmitClicked
-                        )
+                        ) {
+                            showDialog = false
+                        }
                     }
                 }
             }
