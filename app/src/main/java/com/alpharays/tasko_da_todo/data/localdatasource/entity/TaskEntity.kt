@@ -1,4 +1,4 @@
-package com.alpharays.tasko_da_todo.data.entity
+package com.alpharays.tasko_da_todo.data.localdatasource.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

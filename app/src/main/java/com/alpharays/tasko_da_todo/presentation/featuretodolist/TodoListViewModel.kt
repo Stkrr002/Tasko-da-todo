@@ -3,12 +3,12 @@ package com.alpharays.tasko_da_todo.presentation.featuretodolist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alpharays.tasko_da_todo.DialogTaskData
-import com.alpharays.tasko_da_todo.domain.AddTaskUseCase
-import com.alpharays.tasko_da_todo.domain.DeleteTaskUseCase
-import com.alpharays.tasko_da_todo.domain.EditTaskUseCase
-import com.alpharays.tasko_da_todo.domain.GetTasksUseCase
-import com.alpharays.tasko_da_todo.domain.ReorderTasksUseCase
 import com.alpharays.tasko_da_todo.domain.model.TaskData
+import com.alpharays.tasko_da_todo.domain.usecase.AddTaskUseCase
+import com.alpharays.tasko_da_todo.domain.usecase.DeleteTaskUseCase
+import com.alpharays.tasko_da_todo.domain.usecase.EditTaskUseCase
+import com.alpharays.tasko_da_todo.domain.usecase.GetTasksUseCase
+import com.alpharays.tasko_da_todo.domain.usecase.ReorderTasksUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

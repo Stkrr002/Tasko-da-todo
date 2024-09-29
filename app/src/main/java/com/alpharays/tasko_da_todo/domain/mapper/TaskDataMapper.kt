@@ -1,6 +1,6 @@
 package com.alpharays.tasko_da_todo.domain.mapper
 
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 import com.alpharays.tasko_da_todo.domain.model.TaskData
 
 fun Task.toTaskData(): TaskData {

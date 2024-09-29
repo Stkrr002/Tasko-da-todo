@@ -1,10 +1,8 @@
 package com.alpharays.tasko_da_todo.data.repository
 
-import com.alpharays.tasko_da_todo.data.dao.TaskDao
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.data.localdatasource.dao.TaskDao
+import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TaskRepository @Inject constructor(private val taskDao: TaskDao) {

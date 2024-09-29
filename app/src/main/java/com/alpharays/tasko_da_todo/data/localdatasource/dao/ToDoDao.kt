@@ -1,4 +1,4 @@
-package com.alpharays.tasko_da_todo.data.dao
+package com.alpharays.tasko_da_todo.data.localdatasource.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 import kotlinx.coroutines.flow.Flow
 
 @Dao

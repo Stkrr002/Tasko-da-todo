@@ -1,11 +1,11 @@
-package com.alpharays.tasko_da_todo.data
+package com.alpharays.tasko_da_todo.data.localdatasource.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.alpharays.tasko_da_todo.data.dao.TaskDao
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.data.localdatasource.dao.TaskDao
+import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 
 @Database(entities = [Task::class], version = 1, exportSchema = false)
 abstract class TaskDatabase : RoomDatabase() {

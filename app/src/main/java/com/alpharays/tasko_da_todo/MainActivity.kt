@@ -37,7 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 import com.alpharays.tasko_da_todo.domain.model.TaskData
 import com.alpharays.tasko_da_todo.presentation.dragdrop.DragDropColumn
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.TaskViewModel

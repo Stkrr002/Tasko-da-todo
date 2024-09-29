@@ -1,8 +1,8 @@
 package com.alpharays.tasko_da_todo.di
 
 import android.app.Application
-import com.alpharays.tasko_da_todo.data.TaskDatabase
-import com.alpharays.tasko_da_todo.data.dao.TaskDao
+import com.alpharays.tasko_da_todo.data.localdatasource.database.TaskDatabase
+import com.alpharays.tasko_da_todo.data.localdatasource.dao.TaskDao
 import com.alpharays.tasko_da_todo.data.repository.TaskRepository
 import dagger.Module
 import dagger.Provides

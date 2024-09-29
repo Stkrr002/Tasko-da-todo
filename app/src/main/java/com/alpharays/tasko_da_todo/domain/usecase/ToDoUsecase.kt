@@ -1,6 +1,6 @@
-package com.alpharays.tasko_da_todo.domain
+package com.alpharays.tasko_da_todo.domain.usecase
 
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 import com.alpharays.tasko_da_todo.data.repository.TaskRepository
 import com.alpharays.tasko_da_todo.domain.mapper.toTask
 import com.alpharays.tasko_da_todo.domain.mapper.toTaskData
