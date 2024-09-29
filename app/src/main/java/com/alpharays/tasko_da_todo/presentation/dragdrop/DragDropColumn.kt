@@ -18,8 +18,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.realityexpander.dragdropcolumncompose.DraggableItem
-import com.realityexpander.dragdropcolumncompose.rememberDragDropState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

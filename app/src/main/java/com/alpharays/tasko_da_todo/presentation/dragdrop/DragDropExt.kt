@@ -1,7 +1,6 @@
-package com.realityexpander.dragdropcolumncompose
+package com.alpharays.tasko_da_todo.presentation.dragdrop
 
 import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -17,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.zIndex
+import com.realityexpander.dragdropcolumncompose.DragDropState
 
 @Composable
 fun rememberDragDropState(

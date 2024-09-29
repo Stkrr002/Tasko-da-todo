@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
+import com.alpharays.tasko_da_todo.presentation.dragdrop.getVisibleItemInfoFor
+import com.alpharays.tasko_da_todo.presentation.dragdrop.offsetEnd
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
