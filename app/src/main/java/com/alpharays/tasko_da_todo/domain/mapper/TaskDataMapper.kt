@@ -12,9 +12,9 @@ fun Task.toTaskData(): TaskData {
     )
 }
 
-fun TaskData.toTask(id: Int = 0): Task {
+fun TaskData.toTask(): Task {
     return Task(
-        id = id,
+        id = this.id,
         title = this.title,
         description = this.description,
         position = this.position
