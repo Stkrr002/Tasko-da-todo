@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alpharays.tasko_da_todo.DialogTaskData
-import com.alpharays.tasko_da_todo.DragNDropItemsList
 import com.alpharays.tasko_da_todo.domain.model.TaskData
+import com.alpharays.tasko_da_todo.presentation.featuretodolist.components.TodoItemList
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.dialog.EditTaskDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,7 +101,7 @@ fun TodoListScreen(){
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DragNDropItemsList(
+                    TodoItemList(
                         itemsStateFlow = itemsStateFlow,
                         onItemClicked = ::onItemClicked,
                         onSwapItems = ::swapItems,
