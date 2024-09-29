@@ -41,6 +41,7 @@ import com.alpharays.tasko_da_todo.data.localdatasource.entity.Task
 import com.alpharays.tasko_da_todo.domain.model.TaskData
 import com.alpharays.tasko_da_todo.presentation.dragdrop.DragDropColumn
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.TaskViewModel
+import com.alpharays.tasko_da_todo.presentation.featuretodolist.TodoListScreen
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.dialog.EditTaskDialog
 import com.alpharays.tasko_da_todo.ui.theme.TaskodatodoTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,94 +62,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             enableEdgeToEdge()
             TaskodatodoTheme {
-                val viewModel: TaskViewModel = hiltViewModel()
-                val itemsStateFlow = viewModel.tasks
-
-                var showDialog by rememberSaveable { mutableStateOf(false) }
-
-                fun swapItems(from: Int, to: Int) {
-                    viewModel.reorderTasks(from, to)
-                }
-
-                fun onEditTask(task: TaskData) {
-                    viewModel.editTask(task)
-                    showDialog = false
-                }
-
-                fun onAddTask(task: TaskData) {
-                    viewModel.addTask(task)
-                    showDialog = false
-                }
-
-                fun onDeleteTask(task: TaskData) {
-                    viewModel.deleteTask(task)
-                }
-
-                fun onItemClicked(clickedItem: TaskData) {
-                    viewModel.showDialogData = DialogTaskData(
-                        task = clickedItem,
-                        onSubmitClicked = ::onEditTask,
-                    )
-                    showDialog = true
-                }
-
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text("Tasko-da-todo") },
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                titleContentColor = Color.White
-                            )
-                        )
-                    },
-                    floatingActionButton = {
-                        FloatingActionButton(
-                            onClick = {
-                                viewModel.showDialogData = DialogTaskData(
-                                    TaskData(0, "", "", position = 0),
-                                    ::onAddTask,
-                                )
-                                showDialog = true
-                            },
-                            modifier = Modifier.padding(16.dp),
-                            containerColor = MaterialTheme.colorScheme.primary
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Add Task"
-                            )
-                        }
-                    },
-                    content = { paddingValues ->
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(paddingValues)
-                        ) {
-                            Surface(
-                                modifier = Modifier.fillMaxSize(),
-                                color = MaterialTheme.colorScheme.background
-                            ) {
-                                DragNDropItemsList(
-                                    itemsStateFlow = itemsStateFlow,
-                                    onItemClicked = ::onItemClicked,
-                                    onSwapItems = ::swapItems,
-                                    onDelete = ::onDeleteTask
-                                )
-                            }
-
-                            if (showDialog && viewModel.showDialogData != null) {
-                                EditTaskDialog(
-                                    task = viewModel.showDialogData!!.task,
-                                    onSubmitClicked = viewModel.showDialogData!!.onSubmitClicked
-                                ) {
-                                    showDialog = false
-                                }
-                            }
-                        }
-                    }
-                )
+                TodoListScreen()
             }
         }
     }
