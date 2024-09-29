@@ -1,22 +1,27 @@
 package com.alpharays.tasko_da_todo
 
 import android.os.Bundle
+import android.provider.CalendarContract.Colors
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -77,6 +82,10 @@ class MainActivity : ComponentActivity() {
                     showDialog = false
                 }
 
+                fun onDeleteTask(task: Task) {
+                    viewModel.deleteTask(task)
+                }
+
                 fun onItemClicked(clickedItem: Task) {
                     viewModel.showDialogData = DialogTaskData(
                         task = clickedItem,
@@ -93,8 +102,10 @@ class MainActivity : ComponentActivity() {
                         DragNDropItemsList(
                             itemsStateFlow = itemsStateFlow,
                             onItemClicked = ::onItemClicked,
-                            onSwapItems = ::swapItems
-                        )
+                            onSwapItems = ::swapItems,
+                            onDelete = ::onDeleteTask,
+
+                            )
                     }
 
                     FloatingActionButton(
@@ -115,10 +126,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    if (showDialog && viewModel.showDialogData!=null) {
+                    if (showDialog && viewModel.showDialogData != null) {
                         EditTaskDialog(
-                            task =  viewModel.showDialogData!!.task,
-                            onSubmitClicked =  viewModel.showDialogData!!.onSubmitClicked
+                            task = viewModel.showDialogData!!.task,
+                            onSubmitClicked = viewModel.showDialogData!!.onSubmitClicked
                         )
                     }
                 }
@@ -132,29 +143,63 @@ class MainActivity : ComponentActivity() {
 fun DragNDropItemsList(
     itemsStateFlow: StateFlow<List<Task>>,
     onItemClicked: (Task) -> Unit = {},
-    onSwapItems: (Int, Int) -> Unit
+    onSwapItems: (Int, Int) -> Unit,
+    onDelete: (Task) -> Unit
 ) {
     DragDropColumn(
         items = itemsStateFlow.collectAsState().value,
         onSwap = onSwapItems
     ) { item ->
+        val randomColor = Color(
+            red = Random(item.id).nextInt(256),
+            green = Random(item.id + 1).nextInt(256),
+            blue = Random(item.id + 2).nextInt(256)
+        )
+
         Card(
             modifier = Modifier
-                .clickable {
-                    onItemClicked(item)
-                },
+                .fillMaxWidth()
+                .clickable { onItemClicked(item) },
+            shape = MaterialTheme.shapes.medium,
+            elevation = CardDefaults.cardElevation(4.dp),
+            colors = CardDefaults.cardColors(containerColor = randomColor)
         ) {
-            Text(
-                text = item.title,
-                color = MaterialTheme.colorScheme.onSurface,
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(Random(item.id).nextLong()))
                     .padding(16.dp),
-            )
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = item.title.replaceFirst(
+                            oldChar = item.title.first(),
+                            newChar = item.title.first().uppercaseChar()
+                        ),
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Text(
+                        text = item.description.replaceFirst(
+                            oldChar = item.description.first(),
+                            newChar = item.description.first().uppercaseChar()
+                        ),
+                        color = Color.White.copy(alpha = 0.7f),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                    )
+                }
+                IconButton(
+                    onClick = { onDelete(item) },
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete Task")
+                }
+            }
         }
     }
 }
-
-
-
