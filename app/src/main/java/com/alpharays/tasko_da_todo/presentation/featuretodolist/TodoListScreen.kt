@@ -77,8 +77,8 @@ fun TodoListScreen(){
             FloatingActionButton(
                 onClick = {
                     viewModel.showDialogData = DialogTaskData(
-                        TaskData(0, "", "", position = 0),
-                        ::onAddTask,
+                        TaskData(0, "", "", position = itemsStateFlow.value.size.takeIf { it > 0 }?.minus(1) ?: 0),
+                        ::onAddTask
                     )
                     showDialog = true
                 },
