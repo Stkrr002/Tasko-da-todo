@@ -1,11 +1,9 @@
 package com.alpharays.tasko_da_todo
 
 import android.os.Bundle
-import android.provider.CalendarContract.Colors
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,22 +14,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,14 +38,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alpharays.tasko_da_todo.data.entity.Task
-import com.alpharays.tasko_da_todo.presentation.featuretodolist.TaskViewModel
 import com.alpharays.tasko_da_todo.presentation.dragdrop.DragDropColumn
+import com.alpharays.tasko_da_todo.presentation.featuretodolist.TaskViewModel
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.dialog.EditTaskDialog
 import com.alpharays.tasko_da_todo.ui.theme.TaskodatodoTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlin.random.Random
 
 
@@ -56,9 +52,9 @@ data class DialogTaskData(
     val onSubmitClicked: (Task) -> Unit,
 )
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -68,7 +64,6 @@ class MainActivity : ComponentActivity() {
                 val itemsStateFlow = viewModel.tasks
 
                 var showDialog by rememberSaveable { mutableStateOf(false) }
-
 
                 fun swapItems(from: Int, to: Int) {
                     viewModel.reorderTasks(from, to)
@@ -96,52 +91,66 @@ class MainActivity : ComponentActivity() {
                     showDialog = true
                 }
 
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        DragNDropItemsList(
-                            itemsStateFlow = itemsStateFlow,
-                            onItemClicked = ::onItemClicked,
-                            onSwapItems = ::swapItems,
-                            onDelete = ::onDeleteTask,
-
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Tasko-da-todo") },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                titleContentColor = Color.White
                             )
-                    }
-
-                    FloatingActionButton(
-                        onClick = {
-                            viewModel.showDialogData = DialogTaskData(
-                                Task(0, "", "", position = 0),
-                                ::onAddTask,
-                            )
-                            showDialog = true
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Add Task"
                         )
-                    }
-
-                    if (showDialog && viewModel.showDialogData != null) {
-                        EditTaskDialog(
-                            task = viewModel.showDialogData!!.task,
-                            onSubmitClicked = viewModel.showDialogData!!.onSubmitClicked
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = {
+                                viewModel.showDialogData = DialogTaskData(
+                                    Task(0, "", "", position = 0),
+                                    ::onAddTask,
+                                )
+                                showDialog = true
+                            },
+                            modifier = Modifier.padding(16.dp)
                         ) {
-                            showDialog = false
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add Task"
+                            )
+                        }
+                    },
+                    content = { paddingValues ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(paddingValues)
+                        ) {
+                            Surface(
+                                modifier = Modifier.fillMaxSize(),
+                                color = MaterialTheme.colorScheme.background
+                            ) {
+                                DragNDropItemsList(
+                                    itemsStateFlow = itemsStateFlow,
+                                    onItemClicked = ::onItemClicked,
+                                    onSwapItems = ::swapItems,
+                                    onDelete = ::onDeleteTask
+                                )
+                            }
+
+                            if (showDialog && viewModel.showDialogData != null) {
+                                EditTaskDialog(
+                                    task = viewModel.showDialogData!!.task,
+                                    onSubmitClicked = viewModel.showDialogData!!.onSubmitClicked
+                                ) {
+                                    showDialog = false
+                                }
+                            }
                         }
                     }
-                }
+                )
             }
         }
     }
 }
-
 
 @Composable
 fun DragNDropItemsList(
