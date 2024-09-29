@@ -3,12 +3,12 @@ package com.alpharays.tasko_da_todo.presentation.featuretodolist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alpharays.tasko_da_todo.DialogTaskData
-import com.alpharays.tasko_da_todo.data.entity.Task
 import com.alpharays.tasko_da_todo.domain.AddTaskUseCase
 import com.alpharays.tasko_da_todo.domain.DeleteTaskUseCase
 import com.alpharays.tasko_da_todo.domain.EditTaskUseCase
 import com.alpharays.tasko_da_todo.domain.GetTasksUseCase
 import com.alpharays.tasko_da_todo.domain.ReorderTasksUseCase
+import com.alpharays.tasko_da_todo.domain.model.TaskData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,8 +26,8 @@ class TaskViewModel @Inject constructor(
 
     var showDialogData: DialogTaskData? = null
 
-    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
-    val tasks: StateFlow<List<Task>> = _tasks
+    private val _tasks = MutableStateFlow<List<TaskData>>(emptyList())
+    val tasks: StateFlow<List<TaskData>> = _tasks
 
     init {
 
@@ -39,19 +39,19 @@ class TaskViewModel @Inject constructor(
     }
 
 
-    fun addTask(task: Task) {
+    fun addTask(task: TaskData) {
         viewModelScope.launch {
             addTaskUseCase(task)
         }
     }
 
-    fun editTask(task: Task) {
+    fun editTask(task: TaskData) {
         viewModelScope.launch {
             editTaskUseCase(task)
         }
     }
 
-    fun deleteTask(task: Task) {
+    fun deleteTask(task: TaskData) {
         viewModelScope.launch {
             deleteTaskUseCase(task)
         }

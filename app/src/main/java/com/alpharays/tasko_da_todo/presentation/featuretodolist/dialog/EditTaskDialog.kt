@@ -23,10 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.domain.model.TaskData
 
 @Composable
-fun EditTaskDialog(task: Task, onSubmitClicked: (Task) -> Unit, onCancelClicked: () -> Unit) {
+fun EditTaskDialog(task: TaskData, onSubmitClicked: (TaskData) -> Unit, onCancelClicked: () -> Unit) {
     var taskTitle by remember { mutableStateOf(task.title) }
     var taskDescription by remember { mutableStateOf(task.description) }
 

@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.alpharays.tasko_da_todo.data.entity.Task
+import com.alpharays.tasko_da_todo.domain.model.TaskData
 import com.alpharays.tasko_da_todo.presentation.dragdrop.DragDropColumn
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.TaskViewModel
 import com.alpharays.tasko_da_todo.presentation.featuretodolist.dialog.EditTaskDialog
@@ -48,8 +49,8 @@ import kotlin.random.Random
 
 
 data class DialogTaskData(
-    val task: Task,
-    val onSubmitClicked: (Task) -> Unit,
+    val task: TaskData,
+    val onSubmitClicked: (TaskData) -> Unit,
 )
 
 @AndroidEntryPoint
@@ -69,21 +70,21 @@ class MainActivity : ComponentActivity() {
                     viewModel.reorderTasks(from, to)
                 }
 
-                fun onEditTask(task: Task) {
+                fun onEditTask(task: TaskData) {
                     viewModel.editTask(task)
                     showDialog = false
                 }
 
-                fun onAddTask(task: Task) {
+                fun onAddTask(task: TaskData) {
                     viewModel.addTask(task)
                     showDialog = false
                 }
 
-                fun onDeleteTask(task: Task) {
+                fun onDeleteTask(task: TaskData) {
                     viewModel.deleteTask(task)
                 }
 
-                fun onItemClicked(clickedItem: Task) {
+                fun onItemClicked(clickedItem: TaskData) {
                     viewModel.showDialogData = DialogTaskData(
                         task = clickedItem,
                         onSubmitClicked = ::onEditTask,
@@ -105,7 +106,7 @@ class MainActivity : ComponentActivity() {
                         FloatingActionButton(
                             onClick = {
                                 viewModel.showDialogData = DialogTaskData(
-                                    Task(0, "", "", position = 0),
+                                    TaskData(0, "", "", position = 0),
                                     ::onAddTask,
                                 )
                                 showDialog = true
@@ -155,10 +156,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DragNDropItemsList(
-    itemsStateFlow: StateFlow<List<Task>>,
-    onItemClicked: (Task) -> Unit = {},
+    itemsStateFlow: StateFlow<List<TaskData>>,
+    onItemClicked: (TaskData) -> Unit = {},
     onSwapItems: (Int, Int) -> Unit,
-    onDelete: (Task) -> Unit
+    onDelete: (TaskData) -> Unit
 ) {
     DragDropColumn(
         items = itemsStateFlow.collectAsState().value,

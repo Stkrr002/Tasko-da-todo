@@ -10,6 +10,8 @@ import javax.inject.Inject
 class TaskRepository @Inject constructor(private val taskDao: TaskDao) {
     val allTasks: Flow<List<Task>> = taskDao.getAllTasks()
 
+
+
     suspend fun insert(task: Task) {
         taskDao.insertTask(task)
     }
