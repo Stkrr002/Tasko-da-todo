@@ -23,7 +23,7 @@ class TaskViewModel @Inject constructor(
     private val reorderTasksUseCase: ReorderTasksUseCase
 ) : ViewModel() {
 
-    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
+    val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks: StateFlow<List<Task>> = _tasks
 
     init {
